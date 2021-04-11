@@ -1,4 +1,4 @@
-package com.example.starter.eventbus;
+package com.wolf.test.eventbus;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;

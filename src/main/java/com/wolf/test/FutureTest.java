@@ -1,11 +1,7 @@
-package com.example.starter;
+package com.wolf.test;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
-import io.vertx.core.eventbus.DeliveryOptions;
-import io.vertx.core.eventbus.Message;
-
-import java.util.function.Function;
 
 /**
  * Description:
