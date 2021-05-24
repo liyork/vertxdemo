@@ -22,11 +22,11 @@ public class ConsumerTest extends AbstractVerticle {
     // 注册handlers,news.uk.sport表示消息的注册地址
     MessageConsumer<Object> consumer = eventBus.consumer("news.uk.sport");
     consumer.handler(message -> {
-      System.out.println("1-I have received a message: " + message.body());
+      System.out.println("1-I have received a header:" + message.headers() + ", message: " + message.body());
       message.reply("1-how interesting");// 回应
     });
 
-    // 注册后的通知
+    // 注册成功后通知(若是集群可能注册时需要一定时间)
     consumer.completionHandler(res -> {
       if (res.succeeded()) {
         System.out.println("1-The handler registration has reached all nodes");
@@ -43,7 +43,5 @@ public class ConsumerTest extends AbstractVerticle {
     //    System.out.println("Un-registration failed!");
     //  }
     //});
-
-
   }
 }

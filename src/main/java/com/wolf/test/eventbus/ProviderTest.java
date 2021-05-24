@@ -20,16 +20,21 @@ public class ProviderTest extends AbstractVerticle {
 
     // 发送给，所有注册在news.uk.sport上的handlers
     DeliveryOptions options = new DeliveryOptions();
+    options.setSendTimeout(5000);// 默认30s
     options.addHeader("some-header", "some-value");
+
+    // 发送给所有
     //EventBus publish = eventBus.publish("news.uk.sport", "Yay!Someone kicked a ball", options);
 
-    // 发送给一个handler
-    //eventBus.send("news.uk.sport", "Yay!Someone kicked a ball");
+    // 发送给一个handler(随机)
+    //eventBus.send("news.uk.sport", "Yay!Someone kicked a ball", options);
 
-    // 请求有回应
+    // 发送给一个handler，请求有回应
     eventBus.request("news.uk.sport", "Yay! Someone kicked a ball across a patch of grass", ar -> {
       if (ar.succeeded()) {
         System.out.println("Received reply: " + ar.result().body());
+      } else {
+        System.out.println("Received reply fail: " + ar.result().body());
       }
     });
 

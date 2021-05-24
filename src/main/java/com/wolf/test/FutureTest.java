@@ -1,7 +1,6 @@
 package com.wolf.test;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Future;
+import io.vertx.core.*;
 
 /**
  * Description:
@@ -26,7 +25,96 @@ public class FutureTest extends AbstractVerticle {
   public static void main(String[] args) {
     //Future<String> future = testFuture();
 
-    testCompose();
+    //testCompose();
+
+    //testComplete();
+
+    testCompositeFutureAll();
+
+    //testCompositeFutureAny();
+  }
+
+  // 都succ则返回succ
+  private static void testCompositeFutureAll() {
+    Future<String> f1 = Future.future(promise -> {
+      System.out.println("1111");
+      try {
+        Thread.sleep(2000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      promise.complete();
+      //promise.fail("xxx");
+    });
+
+    Future<String> f2 = Future.future(promise -> {
+      System.out.println("2222");
+      try {
+        Thread.sleep(2000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      promise.complete();
+      promise.fail("yyy");
+    });
+
+    CompositeFuture.all(f1, f2).onComplete(e -> {
+      if (e.succeeded()) {
+        System.out.println("CompositeFuture.all onComplete succ ," + e.result());
+      } else {
+        System.out.println("CompositeFuture.all onComplete fail " + e.result());
+      }
+    });
+  }
+
+  // 一个succ则succ
+  private static void testCompositeFutureAny() {
+    Future<String> f1 = Future.future(promise -> {
+      System.out.println("1111");
+      try {
+        Thread.sleep(2000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      promise.complete();
+      //promise.fail("xxx");
+    });
+
+    Future<String> f2 = Future.future(promise -> {
+      System.out.println("2222");
+      try {
+        Thread.sleep(2000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      promise.complete();
+      promise.fail("yyy");
+    });
+
+    CompositeFuture.any(f1, f2).onComplete(e -> {
+      if (e.succeeded()) {
+        System.out.println("CompositeFuture.all onComplete succ ," + e.result());
+      } else {
+        System.out.println("CompositeFuture.all onComplete fail " + e.result());
+      }
+    });
+  }
+
+  private static void testComplete() {
+    Future<String> future = Future.future(promise -> {
+      System.out.println("1111");
+      try {
+        Thread.sleep(2000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      //promise.complete();
+      promise.fail("xxx");
+    });
+
+    future.onComplete((AsyncResult<String> event) -> {
+      System.out.println("Complete. " + event.result());
+    });
   }
 
   // 成功则继续否则退出
