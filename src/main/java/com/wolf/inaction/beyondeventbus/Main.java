@@ -1,0 +1,46 @@
+package com.wolf.inaction.beyondeventbus;
+
+import com.wolf.inaction.beyondeventbus.reactivex.SensorDataServiceWithRx;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.reactivex.RxHelper;
+import io.vertx.reactivex.core.Vertx;
+
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Description:
+ * Created on 2021/5/28 8:55 AM
+ *
+ * @author 李超
+ * @version 0.0.1
+ */
+public class Main extends AbstractVerticle {
+    @Override
+    public void start() throws Exception {
+        //useGenEventBus();
+        //useGenRx();
+    }
+
+    private void useGenRx() {
+        Vertx vertx = new Vertx(this.vertx);
+        SensorDataServiceWithRx service =
+                SensorDataServiceWithRx.createProxy(vertx, "sensor.data-service");
+
+        service.rxAverage()// single
+                .delaySubscription(3, TimeUnit.SECONDS, RxHelper.scheduler(this.vertx))
+                .repeat()
+                .map(data -> "avt = " + data.getDouble("average"))
+                .subscribe(System.out::println);
+    }
+
+    private void useGenEventBus() {
+        SensorDataService service = SensorDataService.createProxy(vertx, "sensor.data-service");
+        service.average(ar -> {
+            if (ar.succeeded()) {
+                System.out.println("Average = " + ar.result());
+            } else {
+                ar.cause().printStackTrace();
+            }
+        });
+    }
+}
