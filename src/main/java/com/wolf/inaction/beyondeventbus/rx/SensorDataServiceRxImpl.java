@@ -1,4 +1,4 @@
-package com.wolf.inaction.beyondeventbus;
+//package com.wolf.inaction.beyondeventbus;
 
 /**
  * Description:
@@ -7,10 +7,10 @@ package com.wolf.inaction.beyondeventbus;
  * @author 李超
  * @version 0.0.1
  */
-//public class SensorDataServiceImpl implements SensorDataService {
+//public class SensorDataServiceRxImpl implements SensorDataServiceWithRx {
 //    private final HashMap<String, Double> lastValues = new HashMap<>();
 //
-//    SensorDataServiceImpl(Vertx vertx) {
+//    SensorDataServiceRxImpl(Vertx vertx) {
 //        vertx.eventBus().<JsonObject>consumer("sensor.updates", message -> {
 //            JsonObject json = message.body();
 //            lastValues.put(json.getString("id"), json.getDouble("temp"));
@@ -23,7 +23,7 @@ package com.wolf.inaction.beyondeventbus;
 //            JsonObject data = new JsonObject()
 //                    .put("sensorId", sensorId)
 //                    .put("value", lastValues.get(sensorId));
-//            handler.handle(Future.succeededFuture(data));// 不用reply，而是用异步result
+//            handler.handle(Future.succeededFuture(data));
 //        } else {
 //            handler.handle(Future.failedFuture("No value has been observed for " + sensorId));
 //        }
